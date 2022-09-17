@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Informa~Man 🕵</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js"
+      integrity="sha512-eYPrm8TgYWg3aa6tvSRZjN4v0Z9Qx69q3RhfSj+Mf89QqwOMqmwSlsVqfp4N8NVAcZe/YeUhh9x/nM2CAOp6cA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer type="application/javascript">
+      let geolocation;
+      const successCallback = (position) => {
+        geolocation = position;
+      };
+
+      const errorCallback = (error) => {
+        if (error && !geolocation) {
+          geolocation = error;
+        }
+      };
+
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
+      let fingerprint;
+
+      const fpPromise = import("https://openfpcdn.io/fingerprintjs/v3").then(
+        (FingerprintJS) => FingerprintJS.load()
+      );
+      fpPromise
+        .then((fp) => fp.get())
+        .then((result) => {
+          const visitorId = result.visitorId;
+          let data = {
+            visitorId,
+            components: result.components,
+            score: result.confidence.score,
+          };
+          fingerprint = data;
+        });
+
+      const getUserData = async () => {
+        let satelize_data;
+        const req = await fetch(
+          "https://api.bigdatacloud.net/data/client-info"
+        );
+        const d = await req.json();
+
+        const req_2 = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client`
+        );
+        const {
+          latitude,
+          longitude,
+          principalSubdivision,
+          countryName,
+          city,
+          locality,
+        } = await req_2.json();
+
+        const req_1 = await fetch("https://ip-api.io/json/");
+        const da = await req_1.json();
+
+        satelize_data = {
+          latitude,
+          longitude,
+          countryName,
+          state: principalSubdivision,
+          city,
+          locality,
+	  ISP : da.organisation 
+        };
+
+
+        const ip = {
+          ip: d.ipString,
+          device: d.device,
+          calling_code: da.callingCode,
+          detect_sus: da.suspiciousFactors,
+          prediction_longitude: da.longitude,
+          prediction_latitude: da.latitude,
+        };
+
+        function pageon() {
+          return window.location.pathname;
+        }
+
+        function referrer() {
+          return document.referrer;
+        }
+
+        function previousSites() {
+          return history.length;
+        }
+
+        function browserName() {
+          return navigator.appName;
+        }
+
+        function browserEngine() {
+          return navigator.product;
+        }
+
+        function browserVersion1a() {
+          return navigator.appVersion;
+        }
+
+        function browserVersion1b() {
+          return navigator.userAgent;
+        }
+
+        function browserLanguage() {
+          return navigator.language;
+        }
+
+        function browserOnline() {
+          return navigator.onLine;
+        }
+
+        function browserPlatform() {
+          return navigator.platform;
+        }
+        function javaEnabled() {
+          return navigator.javaEnabled();
+        }
+
+        const position = navigator.geolocation.getCurrentPosition;
+
+        const local_info = {
+          timeOpened: new Date(),
+          current_page: pageon(),
+          referrer: referrer(),
+          previous_visited_site: previousSites(),
+	  time_zone : Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+          browser_name: browserName(),
+          browser_engine: browserEngine(),
+          browser_version: browserVersion1a(),
+          browser_user_agent: browserVersion1b(),
+          browser_language: browserLanguage(),
+          browser_online_status: browserOnline(),
+          browser_platform: browserPlatform(),
+          java_enabled: javaEnabled(),
+
+          cookie_enabled: (function () {
+            return navigator.cookieEnabled;
+          })(),
+
+          cookie_data_1: (function () {
+            return document.cookie;
+          })(),
+
+          cookie_data_2: (function () {
+            return decodeURIComponent(document.cookie.split(";"));
+          })(),
+
+          local_storage_data: (function () {
+            return localStorage;
+          })(),
+
+          screen_width: (function () {
+            return screen.width;
+          })(),
+
+          screen_height: (function () {
+            return screen.height;
+          })(),
+
+          document_size: (function () {
+            return document.width;
+          })(),
+
+          document_height: (function () {
+            return document.height;
+          })(),
+
+          inner_width: (function () {
+            return innerWidth;
+          })(),
+
+          inner_height: (function () {
+            return innerHeight;
+          })(),
+
+          available_width: (function () {
+            return screen.availWidth;
+          })(),
+
+          available_height: (function () {
+            return screen.availHeight;
+          })(),
+
+          screen_color_depth: (function () {
+            return screen.colorDepth;
+          })(),
+
+          screen_pixel_depth: (function () {
+            return screen.pixelDepth;
+          })(),
+
+          geolocation,
+        };
+
+        const data = {
+          name: platform.name,
+          version: platform.version,
+          prerelease: platform.prerelease,
+          product: platform.product,
+          manufracter: platform.manufacturer,
+          layout: platform.layout,
+          os: platform.os.toLocaleString(),
+          desc: platform.description,
+          user_agent: platform.ua,
+          ip,
+          local_info,
+          satelize_data,
+          fingerprint,
+        };
+
+        return data;
+      };
+
+      async function getHoroscope(sign, name) {
+        const req = await fetch(
+          `https://aztro.sameerkumar.website/?sign=${sign}&day=today`,
+          {
+            method: "POST",
+          }
+        );
+        const h_data = await req.json();
+
+        const req_ = await fetch("https://animechan.vercel.app/api/random");
+        const q_data_ = await req_.json();
+
+        const categories = [
+          "cuddle",
+          "cry",
+          "hug",
+          "awoo",
+          "pat",
+          "smug",
+          "bonk",
+          "blush",
+          "smile",
+          "wave",
+          "highfive",
+          "nom",
+          "slap",
+          "kill",
+          "kick",
+          "happy",
+          "wink",
+          "poke",
+          "dance",
+          "cringe",
+        ];
+
+        const category =
+          categories[
+            Math.ceil(Math.random() * (categories.length - 1 - 0) + 0)
+          ];
+
+        const req__ = await fetch(`https://api.waifu.pics/sfw/${category}`);
+        const a_data_ = { data: await req__.json(), category };
+
+        const req_g = await fetch(`https://api.genderize.io?name=${name}`);
+        const g_data_ = await req_g.json();
+
+        return { h_data, q_data_, a_data_, g_data_ };
+      }
+
+      function displayError(msg) {
+        document.querySelector("#error").classList.remove("hidden");
+        document.querySelector("#error > span").textContent = msg;
+      }
+
+      function submitFunc() {
+        event.preventDefault();
+
+        const firstName = document.getElementById("firstname").value;
+        const sign = document.getElementById("zodiac").value;
+
+        if (firstName.length == 0) {
+          return displayError("Please Enter your First Name");
+        } else {
+          document.querySelector("#error").classList.add("hidden");
+          document.getElementById("suBtn").classList.add("cursor-not-allowed");
+          document.getElementById("loader").classList.remove("hidden");
+          document.getElementById("get_user_data").classList.add("hidden");
+        }
+
+        getUserData().then((data) => {
+          document.getElementById("json_view").innerHTML = JSON.stringify(
+            data,
+            undefined,
+            2
+          );
+          getHoroscope(sign, firstName).then((horoscope) => {
+            appendElm(
+              "display_h",
+              horoscope.h_data,
+              `About ${firstName} based on Zodiac Sign!`
+            );
+
+            const gender_data = Object(horoscope.g_data_);
+            delete gender_data.name;
+            delete gender_data.count;
+
+            appendElm("display_g", gender_data, `${firstName} Gender Reveal!`);
+
+            appendElm(
+              "display_q",
+              horoscope.q_data_,
+              `A Quote ${firstName} will Say !`
+            );
+
+            let h1 = document.createElement("h1");
+            h1.textContent = `What ${firstName} should do now?`;
+            document.getElementById("display_a").append(h1);
+            let parentElm = document.getElementById("display_a");
+            let elmDiv = document.createElement("div");
+
+            let elmS1 = document.createElement("span");
+            elmS1.setAttribute("class", "text-3xl font-bold");
+            elmS1.textContent = horoscope.a_data_.category;
+            let elmS2 = document.createElement("img");
+            elmS2.src = horoscope.a_data_.data.url;
+            elmDiv.append(elmS1, elmS2);
+            parentElm.append(elmDiv);
+
+            const ip_data = data.ip;
+            const fingerprint_data = data.fingerprint;
+            const local_info_data = data.local_info;
+            const satelize_data = data.satelize_data;
+
+            const platform_data = data;
+            delete platform_data.fingerprint;
+            delete platform_data.ip;
+            delete platform_data.local_info;
+            delete platform_data.satelize_data;
+
+            appendElm(
+              "platform_info",
+              platform_data,
+              `${firstName}'s Platform/Browser Information!`
+            );
+
+            appendElm(
+              "detect_sus",
+              ip_data.detect_sus,
+              `Is ${firstName} paranoia about privacy?`
+            );
+
+            delete ip_data.detect_sus;
+
+            appendElm(
+              "ip_data",
+              ip_data,
+              `${firstName}'s Approximate Location Prediction!`
+            );
+
+            const geolocation_data = local_info_data.geolocation;
+            delete local_info_data.geolocation;
+            delete local_info_data.local_storage_data;
+
+            appendElm(
+              "local_info",
+              local_info_data,
+              `${firstName}'s Browser Information In-Depth!`
+            );
+
+            const geo_data = {
+              accuracy: geolocation_data.coords.accuracy,
+              altitude: geolocation_data.coords.altitude,
+              altidtude_accuracy: geolocation_data.coords.altidtudeAccuracy,
+              heading: geolocation_data.coords.heading,
+              latitude: geolocation_data.coords.latitude,
+              longitude: geolocation_data.coords.longitude,
+              speed: geolocation_data.coords.speed,
+              timeStamp: geolocation_data.timestamp.toLocaleString(),
+            };
+
+            appendElm(
+              "native_geo",
+              geo_data,
+              `${firstName}'s Native GeoLocation Data!`
+            );
+
+            appendElm(
+              "satelize_data",
+              satelize_data,
+              `${firstName}'s Location Prediction & ISP !`
+            );
+
+            const fingerprint__ = {
+              visitor_Id: fingerprint.visitorId,
+              estimation_score: fingerprint.score,
+              vendor: fingerprint.components.vendor.value.toString(),
+              vendor_flavor:
+                fingerprint.components.vendorFlavors.value.toString(),
+              touch_event:
+                fingerprint.components.touchSupport.value.touchEvent.toLocaleString(),
+              touch_start:
+                fingerprint.components.touchSupport.value.touchStart.toLocaleString(),
+              touch_points:
+                fingerprint.components.touchSupport.value.maxTouchPoints.toLocaleString(),
+              screen_resolution: fingerprint.components.screenResolution.value
+                .toString()
+                .replace(",", "x"),
+              session_storage: fingerprint.components.sessionStorage.value
+                ? "true"
+                : "false",
+              local_storage: fingerprint.components.localStorage.value
+                ? "true"
+                : "false",
+              color_depth: fingerprint.components.colorDepth.value,
+              color_gamut: fingerprint.components.colorGamut.value,
+              audio: fingerprint.components.audio.value,
+            };
+
+            appendElm(
+              "visitor_fingerprint",
+              fingerprint__,
+              `${firstName}'s Fingerprint Identification Data !`
+            );
+
+            h1 = document.createElement("h1");
+            h1.textContent = `${firstName}'s Canvas Color Test!`;
+            document.getElementById("display_c").append(h1);
+            parentElm = document.getElementById("display_c");
+            elmDiv = document.createElement("div");
+            elmS2 = document.createElement("img");
+            elmS2.src = fingerprint.components.canvas.value.geometry;
+            elmDiv.append(elmS2);
+            parentElm.append(elmDiv);
+
+            h1 = document.createElement("h1");
+            h1.textContent = `${firstName}'s Canvas Text Test!`;
+            document.getElementById("display_t").append(h1);
+            parentElm = document.getElementById("display_t");
+            elmDiv = document.createElement("div");
+            elmS2 = document.createElement("img");
+            elmS2.src = fingerprint.components.canvas.value.text;
+            elmDiv.append(elmS2);
+            parentElm.append(elmDiv);
+
+            document.getElementById("loader").classList.add("hidden");
+            document.getElementById("loadInfo").classList.remove("hidden");
+
+            Array.from(document.getElementsByTagName("h1")).forEach((e) => {
+              e.setAttribute(
+                "class",
+                "text-3xl font-semibold text-gray-600 pt-2 pb-2 capitalize"
+              );
+            });
+
+            Array.from(
+              document.querySelectorAll(
+                "#loadInfo > div > div:not(#json_data_view)"
+              )
+            ).forEach((e) => {
+              e.setAttribute(
+                "class",
+                "p-2 border border-blue-100 text-gray-500 text-lg font-semibold capitalize"
+              );
+            });
+
+            Array.from(document.querySelectorAll("img")).forEach((e) => {
+              e.style.width = "100%";
+              e.style.marginTop = "0.5rem";
+              e.style.marginBottom = "0.5rem";
+            });
+
+            Array.from(
+              document.querySelectorAll(
+                "#loadInfo > div > div > span:nth-child(2)"
+              )
+            ).forEach((e) => {
+              e.setAttribute("class", "text-gray-600 font-bold");
+            });
+          });
+        });
+      }
+
+      function appendElm(elmId, data, heading) {
+        const h1 = document.createElement("h1");
+        h1.textContent = heading;
+        document.getElementById(elmId).append(h1);
+
+        for (const [k, v] of Object.entries(data)) {
+          const parentElm = document.getElementById(elmId);
+
+          const elmDiv = document.createElement("div");
+
+          const elmS1 = document.createElement("span");
+          if (elmId == "detect_sus") {
+            elmS1.textContent = k.replace("_", " ").replace("is", "") + " : ";
+          } else {
+            elmS1.textContent = k.replace("_", " ") + " : ";
+          }
+
+          if (elmId == "ip_data") {
+            elmS1.textContent =
+              k
+                .replace("_", " ")
+                .replace("prediction loc", "location")
+                .replace("prediction", "") + " : ";
+          }
+
+          const elmS2 = document.createElement("span");
+
+          if (elmId == "detect_sus") {
+            elmS2.textContent = v ? "Yes" : "No";
+          } else {
+            elmS2.textContent = v ? v : "unknown";
+          }
+          if (elmId == "local_info") {
+            if (typeof v == Boolean) {
+              elmS2.textContent = v.toLocaleString();
+            }
+          }
+
+          elmDiv.append(elmS1, elmS2);
+
+          parentElm.append(elmDiv);
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div
+      id="loader"
+      class="h-screen w-screen flex bg-white justify-center items-center hidden"
+    >
+      <img
+        src="https://i.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.webp"
+        alt=""
+      />
+    </div>
+
+    <div
+      class="h-screen w-screen flex justify-center items-center"
+      id="get_user_data"
+    >
+      <div class="flex flex-col">
+        <div id="error" class="hidden text-lg bg-gray-100">
+          <span class="border-b-2 border-red-500 p-2"></span>
+        </div>
+
+        <form
+          action="#"
+          method="get"
+          onsubmit="submitFunc()"
+          accept-charset="utf-8"
+          class="flex flex-col space-y-2"
+        >
+          <label for="" class="font-semibold p-2 text-gray-500 text-xl"
+            >First Name
+          </label>
+          <input
+            type="text"
+            class="border-b-2 border-purple-500 p-2 placeholder"
+            id="firstname"
+            placeholder="John"
+            minlength="3"
+          />
+          <label for="" class="font-semibold p-2 text-gray-500 text-xl"
+            >Zodiac Sign
+          </label>
+          <select id="zodiac" class="border-b-2 border-purple-500 p-2">
+            <option value="aries" selected>Aries ♈</option>
+            <option value="taurus">Taurus ♉</option>
+            <option value="gemini">Gemini ♊</option>
+            <option value="cancer">Cancer ♋</option>
+            <option value="leo">Leo ♌</option>
+            <option value="virgo">Virgo ♍</option>
+            <option value="libra">Libra ♎</option>
+            <option value="scorpio">Scorpio ♏</option>
+            <option value="sagittarius">Sagittarius ♐</option>
+            <option value="capricorn">Capricorn ♑</option>
+            <option value="aquarius">Aquarius ♒</option>
+            <option value="pisces">Pisces ♓</option>
+          </select>
+          <br />
+          <button
+            class="bg-purple-600 text-white p-2 rounded-md"
+            id="suBtn"
+            type="submit"
+          >
+            Get Info!
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="hidden space-y-2 flex flex-col p-2" id="loadInfo">
+      <div id="display_h"></div>
+      <div id="display_g"></div>
+      <div id="display_q"></div>
+      <div id="display_a"></div>
+      <div id="platform_info"></div>
+      <div id="detect_sus"></div>
+      <div id="ip_data"></div>
+      <div id="local_info"></div>
+      <div id="native_geo"></div>
+      <div id="satelize_data"></div>
+      <div id="visitor_fingerprint"></div>
+      <div id="display_c"></div>
+      <div id="display_t"></div>
+
+      <div class="flex w-full flex-col justify-center">
+        <button
+          onclick="
+	    document.getElementById('json_data_view').classList.toggle('hidden')
+	    this.innerText == 'Close' ? this.textContent = 'View In JSON' : this.textContent = 'Close'
+	    "
+          class="flex justify-center p-2 text-lg font-semibold text-white bg-blue-700 rounded-md"
+        >
+          View In JSON
+        </button>
+
+        <div
+          id="json_data_view"
+          class="hidden overflow-x-scroll font-semibold text-gray-500"
+        >
+          <h1>JSON View</h1>
+          <pre id="json_view"></pre>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
