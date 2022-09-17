@@ -374,14 +374,14 @@
             );
 
             const geo_data = {
-              accuracy: geolocation_data.coords.accuracy,
-              altitude: geolocation_data.coords.altitude,
-              altidtude_accuracy: geolocation_data.coords.altidtudeAccuracy,
-              heading: geolocation_data.coords.heading,
-              latitude: geolocation_data.coords.latitude,
-              longitude: geolocation_data.coords.longitude,
-              speed: geolocation_data.coords.speed,
-              timeStamp: geolocation_data.timestamp.toLocaleString(),
+              accuracy: geolocation_data.coords.accuracy ? geolocation_data.coords.accuracy : 'unknown',
+              altitude: geolocation_data.coords.altitude ?  geolocation_data.coords.altitude : 'unknown' ,
+              altidtude_accuracy: geolocation_data.coords.altidtudeAccuracy ?  geolocation_data.coords.altidtudeAccuracy: '0',
+              heading: geolocation_data.coords.heading ? geolocation_data.coords.heading: 'unknown',
+              latitude: geolocation_data.coords.latitude ? geolocation_data.coords.latitude: 'unknown',
+              longitude: geolocation_data.coords.longitude ?  geolocation_data.coords.longitude: 'unknown',
+              speed: geolocation_data.coords.speed ?  geolocation_data.coords.speed: 'unknown',
+              timeStamp: geolocation_data.timestamp.toLocaleString() ?  geolocation_data.timestamp.toLocaleString(): 'Enable GPS',
             };
 
             appendElm(
