@@ -71,9 +71,8 @@
           state: principalSubdivision,
           city,
           locality,
-	  ISP : da.organisation 
+          ISP: da.organisation,
         };
-
 
         const ip = {
           ip: d.ipString,
@@ -134,7 +133,7 @@
           current_page: pageon(),
           referrer: referrer(),
           previous_visited_site: previousSites(),
-	  time_zone : Intl.DateTimeFormat().resolvedOptions().timeZone,
+          time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 
           browser_name: browserName(),
           browser_engine: browserEngine(),
@@ -373,22 +372,24 @@
               `${firstName}'s Browser Information In-Depth!`
             );
 
-            const geo_data = {
-              accuracy: geolocation_data.coords.accuracy ? geolocation_data.coords.accuracy : 'unknown',
-              altitude: geolocation_data.coords.altitude ?  geolocation_data.coords.altitude : 'unknown' ,
-              altidtude_accuracy: geolocation_data.coords.altidtudeAccuracy ?  geolocation_data.coords.altidtudeAccuracy: '0',
-              heading: geolocation_data.coords.heading ? geolocation_data.coords.heading: 'unknown',
-              latitude: geolocation_data.coords.latitude ? geolocation_data.coords.latitude: 'unknown',
-              longitude: geolocation_data.coords.longitude ?  geolocation_data.coords.longitude: 'unknown',
-              speed: geolocation_data.coords.speed ?  geolocation_data.coords.speed: 'unknown',
-              timeStamp: geolocation_data.timestamp.toLocaleString() ?  geolocation_data.timestamp.toLocaleString(): 'Enable GPS',
-            };
+            if (geolocation_data.coords) {
+              const geo_data = {
+                accuracy: geolocation_data.coords.accuracy,
+                altitude: geolocation_data.coords.altitude,
+                altidtude_accuracy: geolocation_data.coords.altidtudeAccuracy,
+                heading: geolocation_data.coords.heading,
+                latitude: geolocation_data.coords.latitude,
+                longitude: geolocation_data.coords.longitude,
+                speed: geolocation_data.coords.speed,
+                timeStamp: geolocation_data.timestamp.toLocaleString(),
+              };
 
-            appendElm(
-              "native_geo",
-              geo_data,
-              `${firstName}'s Native GeoLocation Data!`
-            );
+              appendElm(
+                "native_geo",
+                geo_data,
+                `${firstName}'s Native GeoLocation Data!`
+              );
+            }
 
             appendElm(
               "satelize_data",
@@ -450,7 +451,7 @@
 
             document.getElementById("loader").classList.add("hidden");
             document.getElementById("loadInfo").classList.remove("hidden");
-	    document.getElementById("footer").classList.remove("hidden");
+            document.getElementById("footer").classList.remove("hidden");
 
             Array.from(document.getElementsByTagName("h1")).forEach((e) => {
               e.setAttribute(
@@ -633,16 +634,18 @@
           <pre id="json_view"></pre>
         </div>
       </div>
-
-    
     </div>
 
-    <div id="footer" class="h-20 mt-5 text-white bg-black font-semibold flex justify-center items-center ">
-
-      <span>Developed By <a class="text-green-500" href="https://github.com/sidmaz666">🏹 Sidmaz666 </a> </span>
-
+    <div
+      id="footer"
+      class="h-20 mt-5 text-white bg-black font-semibold flex justify-center items-center"
+    >
+      <span
+        >Developed By
+        <a class="text-green-500" href="https://github.com/sidmaz666"
+          >🏹 Sidmaz666
+        </a>
+      </span>
     </div>
-    
-  
   </body>
 </html>
