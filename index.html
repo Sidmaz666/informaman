@@ -142,7 +142,7 @@
           browser_language: browserLanguage(),
           browser_online_status: browserOnline(),
           browser_platform: browserPlatform(),
-          java_enabled: javaEnabled(),
+          java_enabled: javaEnabled().toLocaleString(),
 
           cookie_enabled: (function () {
             return navigator.cookieEnabled;
