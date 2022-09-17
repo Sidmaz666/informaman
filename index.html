@@ -290,6 +290,7 @@
           document.getElementById("suBtn").classList.add("cursor-not-allowed");
           document.getElementById("loader").classList.remove("hidden");
           document.getElementById("get_user_data").classList.add("hidden");
+          document.getElementById("footer").classList.add("hidden");
         }
 
         getUserData().then((data) => {
@@ -449,6 +450,7 @@
 
             document.getElementById("loader").classList.add("hidden");
             document.getElementById("loadInfo").classList.remove("hidden");
+	    document.getElementById("footer").classList.remove("hidden");
 
             Array.from(document.getElementsByTagName("h1")).forEach((e) => {
               e.setAttribute(
@@ -531,7 +533,7 @@
     </script>
   </head>
 
-  <body>
+  <body class="overflow-x-hidden">
     <div
       id="loader"
       class="h-screen w-screen flex bg-white justify-center items-center hidden"
@@ -631,6 +633,16 @@
           <pre id="json_view"></pre>
         </div>
       </div>
+
+    
     </div>
+
+    <div id="footer" class="h-20 mt-5 text-white bg-black font-semibold flex justify-center items-center ">
+
+      <span>Developed By <a class="text-green-500" href="https://github.com/sidmaz666">🏹 Sidmaz666 </a> </span>
+
+    </div>
+    
+  
   </body>
 </html>
